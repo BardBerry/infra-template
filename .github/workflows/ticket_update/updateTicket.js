@@ -54,9 +54,18 @@ async function getAllCommits() {
   }
 }
 
+// const OAUTH = 'y0_AgAAAAAdPA9pAAiJYwAAAADShskVJG5NVj9-SOCqf6OzVyGWKH_-y7g'
+// const ACTOR = 'BardBerry'
+// const RELEASE = 'rc-0.0.1'
+// const ORG_ID = '7526988'
+
 async function updateTicket() {
   try {
     const {OAUTH, ACTOR, RELEASE, ORG_ID} = process.env;
+    // const OAUTH = 'y0_AgAAAAAdPA9pAAiJYwAAAADShskVJG5NVj9-SOCqf6OzVyGWKH_-y7g'
+    // const ACTOR = 'BardBerry'
+    // const RELEASE = 'rc-0.0.1'
+    // const ORG_ID = '7526988'
     const commits = await getAllCommits();
     const date = new Date().toLocaleDateString();
     const summary = `Релиз ${RELEASE} - ${date}`;
@@ -84,4 +93,4 @@ async function updateTicket() {
   }
 }
 
-// updateTicket();
+updateTicket();
