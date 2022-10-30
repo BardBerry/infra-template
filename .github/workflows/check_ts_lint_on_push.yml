@@ -1,9 +1,13 @@
 name: check_ts_lint_on_push
 run-name: ${{ github.actor }} started checking files for ts errors and compliance with linter rules
+
 on:  [push]
+
 jobs:
   check_ts_lint:
+    name: check ts errors and linter rules
     runs-on: ubuntu-latest
+
     steps:
       - name: checking out repository onto the runner
         uses: actions/checkout@v3
