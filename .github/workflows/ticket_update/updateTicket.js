@@ -6,17 +6,17 @@ async function getAllTags() {
     if (response.ok) {
       const data = await response.json();
       if (data.length < 2) {
-        getAllCommits();
+        return {lastTag: '', tagBeforeLast: ''};
       } else {
         const regex = /rc-0.0.[0-9]+/;
         let lastTag = regex.exec(data.pop().ref)[0];
         let tagBeforeLast = regex.exec(data.pop().ref)[0];
-        console.log(lastTag, tagBeforeLast);
-        getAllCommits(lastTag, tagBeforeLast);
+
+        return {lastTag, tagBeforeLast};
       }
     }
     else {
-      getAllCommits();
+      return {lastTag: '', tagBeforeLast: ''};
     }
   } catch (error) {
     console.log(error);
@@ -24,9 +24,10 @@ async function getAllTags() {
 }
 
 
-async function getAllCommits(lastTag = '', tagBeforeLast = '') {
+async function getAllCommits() {
   try {
-    const {OAUTH, ACTOR, RELEASE, ORG_ID} = process.env;
+    const {lastTag, tagBeforeLast} = await getAllTags();
+  
     if (lastTag && tagBeforeLast) {
       const response = await fetch(`https://api.github.com/repos/BardBerry/infra-template/compare/${tagBeforeLast}...${lastTag}`);
       if (response.ok) {
@@ -35,7 +36,7 @@ async function getAllCommits(lastTag = '', tagBeforeLast = '') {
           return `${el.sha} ${el.commit.author.name} ${el.commit.message}`;
         }).join('\n');
   
-        console.log(commits);
+        return commits;
       }
     } else {
       const response = await fetch('https://api.github.com/repos/BardBerry/infra-template/commits');
@@ -45,7 +46,7 @@ async function getAllCommits(lastTag = '', tagBeforeLast = '') {
           return `${el.sha} ${el.commit.author.name} ${el.commit.message}`;
         }).join('\n');
   
-        console.log(commits);
+        return commits;
       }
     }
   } catch (error) {
@@ -53,4 +54,34 @@ async function getAllCommits(lastTag = '', tagBeforeLast = '') {
   }
 }
 
-getAllTags();
+async function updateTicket() {
+  try {
+    const {OAUTH, ACTOR, RELEASE, ORG_ID} = process.env;
+    const commits = await getAllCommits();
+    const date = new Date().toLocaleDateString();
+    const summary = `Релиз ${RELEASE} - ${date}`;
+    const description = `Ответственный за релиз: ${ACTOR}\n\nКоммиты, попавшие в релиз:\n${commits}`;
+    console.log(summary);
+    console.log(description);
+
+    const response = await fetch(`https://api.tracker.yandex.net/v2/issues/HOMEWORKSHRI-155`, {
+      method: "PATCH", 
+      headers: {
+        Authorization: `OAuth ${OAUTH}`,
+        "X-Org-ID": ORG_ID,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({summary, description})
+    })
+
+    if (response.ok) {
+      console.log('ticket updated');
+    } else {
+      console.log('error');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// updateTicket();
