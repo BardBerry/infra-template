@@ -6,7 +6,14 @@ async function getAllTags() {
     if (response.ok) {
       const data = await response.json();
       if (data.length < 2) {
-        const res = await fetch('https://api.github.com/repos/BardBerry/infra-template/git/refs/tags');
+        // const res = await fetch('https://api.github.com/repos/BardBerry/infra-template/git/refs/tags');
+      } else {
+        // const regex = /rc-0.0.[0-9]+/;
+        let firstTag = data.pop().url;
+        // firstTag = firstTag.ref
+        console.log(firstTag);
+        // firstTag = regex.exec(firstTag);
+        // console.log(firstTag);
       }
     }
   } catch (error) {
@@ -32,4 +39,4 @@ async function getAllCommits() {
   }
 }
 
-getAllCommits();
+getAllTags();
