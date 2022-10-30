@@ -1,7 +1,11 @@
-name: check_ts_lint
+name: build_release
 run-name: ${{ github.actor }} started checking files for ts errors and compliance with linter rules
 
-on:  workflow_call:
+on:
+  push:
+    tags-ignore:
+      - 'rc-0.0.[0-9]+'
+  workflow_call:
 
 jobs:
   check_ts_lint:
