@@ -1,6 +1,6 @@
-// var a = 'no-var';
+var a = 'no-var';
 
-// console.log(a);
+console.log(a);
 
 // const str: string = 'testing';
 
