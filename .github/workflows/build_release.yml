@@ -9,7 +9,8 @@ on:
       - 'rc-0.0.[0-9]+'
 
 jobs:
-  uses: ./.github/workflows/check_ts_lint.yml
+  check_ts_lint:
+    uses: ./.github/workflows/check_ts_lint.yml
   check-bats-version:
     runs-on: ubuntu-latest
     steps:
