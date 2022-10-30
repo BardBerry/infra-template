@@ -40,3 +40,12 @@ jobs:
         run: |
           cd .github/workflows/ticket_update
           node updateTicket.js
+
+      - name: create comment
+        env:
+          RELEASE: ${{ github.ref_name }}
+          OAUTH: ${{ secrets.OAUTH }}
+          ORG_ID: ${{ secrets.ORG_ID }}
+        run: |
+          cd .github/workflows/ticket_update
+          node createComment.js

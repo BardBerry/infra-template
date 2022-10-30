@@ -61,8 +61,6 @@ async function updateTicket() {
     const date = new Date().toLocaleDateString();
     const summary = `Релиз ${RELEASE} - ${date}`;
     const description = `Ответственный за релиз: ${ACTOR}\n\nКоммиты, попавшие в релиз:\n${commits}`;
-    console.log(summary);
-    console.log(description);
 
     const response = await fetch(`https://api.tracker.yandex.net/v2/issues/HOMEWORKSHRI-155`, {
       method: "PATCH", 
@@ -76,8 +74,6 @@ async function updateTicket() {
 
     if (response.ok) {
       console.log('ticket updated');
-    } else {
-      console.log('error');
     }
   } catch (error) {
     console.log(error);
