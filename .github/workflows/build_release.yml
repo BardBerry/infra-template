@@ -1,0 +1,13 @@
+name: build_release
+run-name: ${{ github.actor }} started building release
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - 'rc-0.0.[0-9]+'
+
+jobs:
+  check_ts_lint:
+    uses: ./.github/workflows/check_ts_lint
