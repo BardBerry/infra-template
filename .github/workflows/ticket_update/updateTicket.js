@@ -28,7 +28,7 @@ async function getAllCommits() {
   try {
     const {lastTag, tagBeforeLast} = await getAllTags();
   
-    if (lastTag && tagBeforeLast) {
+    if (!lastTag && !tagBeforeLast) {
       const response = await fetch(`https://api.github.com/repos/BardBerry/infra-template/compare/${tagBeforeLast}...${lastTag}`);
       if (response.ok) {
         const data = await response.json();
@@ -54,18 +54,9 @@ async function getAllCommits() {
   }
 }
 
-// const OAUTH = 'y0_AgAAAAAdPA9pAAiJYwAAAADShskVJG5NVj9-SOCqf6OzVyGWKH_-y7g'
-// const ACTOR = 'BardBerry'
-// const RELEASE = 'rc-0.0.1'
-// const ORG_ID = '7526988'
-
 async function updateTicket() {
   try {
     const {OAUTH, ACTOR, RELEASE, ORG_ID} = process.env;
-    // const OAUTH = 'y0_AgAAAAAdPA9pAAiJYwAAAADShskVJG5NVj9-SOCqf6OzVyGWKH_-y7g'
-    // const ACTOR = 'BardBerry'
-    // const RELEASE = 'rc-0.0.1'
-    // const ORG_ID = '7526988'
     const commits = await getAllCommits();
     const date = new Date().toLocaleDateString();
     const summary = `Релиз ${RELEASE} - ${date}`;
