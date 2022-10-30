@@ -1,4 +1,4 @@
-name: check_ts_lint_on_push
+name: check_ts_lint
 run-name: ${{ github.actor }} started checking files for ts errors and compliance with linter rules
 
 on:  [push]
