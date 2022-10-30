@@ -3,10 +3,8 @@ run-name: ${{ github.actor }} started building release
 
 on:
   push:
-    branches:
-      - '**'
     tags:
-      - 'rc-0.0.[0-9]+'
+      - 'rc-0.0.*'
 
 jobs:
   check_ts_lint:
