@@ -1,5 +1,20 @@
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
+async function getAllTags() {
+  try {
+    const response = await fetch('https://api.github.com/repos/BardBerry/infra-template/git/refs/tags');
+    if (response.ok) {
+      const data = await response.json();
+      if (data.length < 2) {
+        const res = await fetch('https://api.github.com/repos/BardBerry/infra-template/git/refs/tags');
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
 async function getAllCommits() {
   try {
     const {OAUTH, ACTOR, RELEASE, ORG_ID} = process.env;
