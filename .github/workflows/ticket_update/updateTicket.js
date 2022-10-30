@@ -11,6 +11,7 @@ async function getAllTags() {
         const regex = /rc-0.0.[0-9]+/;
         let lastTag = regex.exec(data.pop().ref)[0];
         let tagBeforeLast = regex.exec(data.pop().ref)[0];
+        console.log(lastTag, tagBeforeLast);
         getAllCommits(lastTag, tagBeforeLast);
       }
     }
@@ -27,11 +28,11 @@ async function getAllCommits(lastTag = '', tagBeforeLast = '') {
   try {
     const {OAUTH, ACTOR, RELEASE, ORG_ID} = process.env;
     if (lastTag && tagBeforeLast) {
-      const response = await fetch('https://api.github.com/repos/BardBerry/infra-template/compare/rc-0.0.1...rc-0.0.6');
+      const response = await fetch(`https://api.github.com/repos/BardBerry/infra-template/compare/${tagBeforeLast}...${lastTag}`);
       if (response.ok) {
         const data = await response.json();
         const commits = data.commits.map((el) => {
-          return `${el.commit.author.name} - ${el.commit.message}`;
+          return `${el.sha} ${el.commit.author.name} ${el.commit.message}`;
         }).join('\n');
   
         console.log(commits);
