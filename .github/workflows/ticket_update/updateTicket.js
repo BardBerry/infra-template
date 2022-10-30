@@ -28,7 +28,7 @@ async function getAllCommits() {
   try {
     const {lastTag, tagBeforeLast} = await getAllTags();
   
-    if (!lastTag && !tagBeforeLast) {
+    if (lastTag && tagBeforeLast) {
       const response = await fetch(`https://api.github.com/repos/BardBerry/infra-template/compare/${tagBeforeLast}...${lastTag}`);
       if (response.ok) {
         const data = await response.json();
